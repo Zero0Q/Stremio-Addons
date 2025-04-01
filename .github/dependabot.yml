@@ -18,7 +18,7 @@ updates:
       separator: "-"
     # Assign reviewers
     reviewers:
-      - "yourusername"
+      - "Zero0Q"
     # Group all updates together
     groups:
       development-dependencies:
@@ -38,4 +38,4 @@ updates:
       - "github-actions"
     open-pull-requests-limit: 5
     reviewers:
-      - "yourusername" 
+      - "Zero0Q" 

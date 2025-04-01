@@ -164,7 +164,7 @@ jobs:
             
             <footer class="bg-dark text-white py-4">
               <div class="container text-center">
-                <p>EpisoNext &copy; 2023 | <a href="https://github.com/yourusername/episonext" class="text-white">GitHub</a></p>
+                <p>EpisoNext &copy; 2023 | <a href="https://github.com/Zero0Q/episonext" class="text-white">GitHub</a></p>
               </div>
             </footer>
             
@@ -231,4 +231,9 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./episonext.zip
           asset_name: episonext.zip
-          asset_content_type: application/zip 
+          asset_content_type: application/zip
+
+  permissions:
+    contents: write
+    packages: write
+    pages: write 
