@@ -1,4 +1,7 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
+const path = require('path')
+const url = require('url')
+const EpisoNextServer = require('./server')
 const configManager = require('./configManager')
 const configUI = require('./configUI')
 const continueWatchingEnhancer = require('./continueWatchingEnhancer')
@@ -7,74 +10,111 @@ class EpisoNextApp {
     constructor() {
         this.mainWindow = null
         this.configWindow = null
+        this.server = new EpisoNextServer()
+        
+        // Set up app event listeners
+        this.setupAppEvents()
     }
-
-    // Initialize the application
+    
     initialize() {
-        // Handle app ready event
-        app.whenReady().then(() => {
-            console.log('EpisoNext application starting...')
-            // Initialize configuration UI
-            configUI.initialize()
-
-            // Check if first-time setup is needed
-            this.checkFirstTimeSetup()
-
-            // Create main application window
-            this.createMainWindow()
-
-            // Setup app lifecycle events
-            this.setupAppEvents()
-        })
-    }
-
-    // Check if first-time setup is required
-    checkFirstTimeSetup() {
-        const currentConfig = configManager.getCurrentConfig()
-
-        // Check if any critical API keys are missing
-        if (!currentConfig.tmdb.apiKey || !currentConfig.realDebrid.apiKey) {
-            // Open configuration window
+        // Start the server
+        this.server.start()
+        
+        // Create the main window
+        this.createMainWindow()
+        
+        // Check if we need to show the configuration window
+        const config = configManager.getCurrentConfig()
+        if (!config.tmdb || !config.tmdb.apiKey) {
             this.openConfigurationWindow()
+        } else {
+            // Start real-time monitoring if we have the necessary API keys
+            this.startRealTimeMonitoring()
         }
     }
-
-    // Create main application window
+    
+    setupAppEvents() {
+        // Quit when all windows are closed
+        app.on('window-all-closed', () => {
+            if (process.platform !== 'darwin') {
+                app.quit()
+            }
+        })
+        
+        app.on('activate', () => {
+            if (BrowserWindow.getAllWindows().length === 0) {
+                this.createMainWindow()
+            }
+        })
+        
+        app.on('before-quit', () => {
+            // Stop the server when the app is closing
+            if (this.server) {
+                this.server.stop()
+            }
+        })
+        
+        // Set up IPC event listeners
+        this.setupIpcEvents()
+    }
+    
+    setupIpcEvents() {
+        // Handle configuration updates
+        ipcMain.on('update-config', (event, config) => {
+            configManager.updateConfig(config)
+            
+            // Close config window if it exists
+            if (this.configWindow) {
+                this.configWindow.close()
+                this.configWindow = null
+            }
+            
+            // Start real-time monitoring with new config
+            this.startRealTimeMonitoring()
+        })
+        
+        // Handle open configuration request
+        ipcMain.on('open-config', () => {
+            this.openConfigurationWindow()
+        })
+    }
+    
     createMainWindow() {
         this.mainWindow = new BrowserWindow({
-            width: 1200,
-            height: 800,
-            title: 'EpisoNext',
+            width: 1000,
+            height: 700,
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false
             }
         })
-
-        // Load main application interface
-        this.mainWindow.loadFile(this.getMainInterfacePath())
-
-        // Setup main window events
-        this.setupMainWindowEvents()
+        
+        // Load the main interface
+        this.mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, '../resources/index.html'),
+            protocol: 'file:',
+            slashes: true
+        }))
+        
+        // Open DevTools in development
+        if (process.env.NODE_ENV === 'development') {
+            this.mainWindow.webContents.openDevTools()
+        }
+        
+        this.mainWindow.on('closed', () => {
+            this.mainWindow = null
+        })
     }
-
-    // Get path to main interface HTML
-    getMainInterfacePath() {
-        const path = require('path')
-        return path.join(__dirname, 'main-interface.html')
-    }
-
-    // Open configuration window
+    
     openConfigurationWindow() {
         if (this.configWindow) {
             this.configWindow.focus()
             return
         }
-
+        
         this.configWindow = new BrowserWindow({
-            width: 800,
-            height: 600,
-            title: 'EpisoNext Configuration',
+            width: 600,
+            height: 400,
             parent: this.mainWindow,
             modal: true,
             webPreferences: {
@@ -82,71 +122,25 @@ class EpisoNextApp {
                 contextIsolation: false
             }
         })
-
-        // Load configuration interface
-        this.configWindow.loadFile(configUI.getConfigurationHTMLPath())
-
-        // Handle window closed event
+        
+        this.configWindow.loadURL(url.format({
+            pathname: path.join(__dirname, '../resources/config.html'),
+            protocol: 'file:',
+            slashes: true
+        }))
+        
         this.configWindow.on('closed', () => {
             this.configWindow = null
         })
     }
-
-    // Setup main window events
-    setupMainWindowEvents() {
-        // Handle window closed
-        this.mainWindow.on('closed', () => {
-            this.mainWindow = null
-        })
-
-        // Start real-time monitoring when window is ready
-        this.mainWindow.webContents.on('did-finish-load', () => {
-            this.startRealTimeMonitoring()
-        })
-    }
-
-    // Start real-time monitoring
+    
     startRealTimeMonitoring() {
+        // Start real-time monitoring if we have the necessary configuration
         const config = configManager.getCurrentConfig()
-
-        // Only start monitoring if required services are enabled
-        if (config.tmdb.enabled && config.tmdb.apiKey) {
-            // Get current watching items (this would typically come from Stremio)
-            const mockWatchingItems = [
-                {
-                    id: 'tt0944947:S1E5', // Game of Thrones
-                    name: 'Game of Thrones',
-                    type: 'series',
-                    season: 1,
-                    episode: 5,
-                    progress: 0.7
-                }
-            ]
-
-            continueWatchingEnhancer.startRealTimeMonitoring(mockWatchingItems)
+        if (config.tmdb && config.tmdb.apiKey) {
+            // In a real implementation, this would start the monitoring process
+            console.log('Starting real-time monitoring with TMDB API key')
         }
-    }
-
-    // Setup app lifecycle events
-    setupAppEvents() {
-        // macOS specific behaviors
-        app.on('activate', () => {
-            if (BrowserWindow.getAllWindows().length === 0) {
-                this.createMainWindow()
-            }
-        })
-
-        // Quit when all windows are closed
-        app.on('window-all-closed', () => {
-            if (process.platform !== 'darwin') {
-                app.quit()
-            }
-        })
-
-        // Stop real-time monitoring before quitting
-        app.on('before-quit', () => {
-            continueWatchingEnhancer.stopRealTimeMonitoring()
-        })
     }
 
     // Create main interface HTML
@@ -209,7 +203,7 @@ class EpisoNextApp {
 
                 // Open configuration window
                 function openConfiguration() {
-                    ipcRenderer.send('open-configuration')
+                    ipcRenderer.send('open-config')
                 }
 
                 // Refresh real-time monitoring
@@ -246,8 +240,10 @@ class EpisoNextApp {
     }
 }
 
-// Initialize and run the application
-const addonApp = new EpisoNextApp()
-addonApp.initialize()
+// Start the application when Electron is ready
+app.whenReady().then(() => {
+    const episoNextApp = new EpisoNextApp()
+    episoNextApp.initialize()
+})
 
-module.exports = addonApp 
+module.exports = EpisoNextApp 

@@ -1,95 +1,86 @@
 const express = require('express')
 const cors = require('cors')
-const { createAddon } = require('./addon')
-const configManager = require('./configManager')
+const path = require('path')
 
 class EpisoNextServer {
-    constructor() {
+    constructor(port = 7000) {
+        this.port = port
         this.app = express()
-        this.port = process.env.PORT || 7000
-        this.addon = null
     }
 
-    // Initialize and start the server
-    async start() {
-        // Configure middleware
-        this.configureMiddleware()
+    start() {
+        // Initialize middleware
+        this.app.use(cors())
+        this.app.use(express.json())
         
-        // Initialize addon
-        await this.initializeAddon()
+        // Serve static files from resources directory
+        const resourcesPath = path.join(__dirname, '../resources')
+        this.app.use(express.static(resourcesPath))
         
         // Setup routes
         this.setupRoutes()
         
-        // Start listening
-        this.listen()
+        // Start server
+        this.app.listen(this.port, () => {
+            console.log('=================================================')
+            console.log('EpisoNext server running on port ' + this.port)
+            console.log('Addon available at: http://localhost:' + this.port + '/manifest.json')
+            console.log('Installation link: stremio://addon/com.stremio.episonext/manifest.json')
+            console.log('=================================================')
+        })
     }
-
-    // Configure Express middleware
-    configureMiddleware() {
-        this.app.use(cors())
-        this.app.use(express.json())
-    }
-
-    // Initialize the Stremio addon
-    async initializeAddon() {
-        const config = configManager.getCurrentConfig()
-        this.addon = await createAddon(config)
-    }
-
-    // Setup Express routes
+    
     setupRoutes() {
-        // Serve the addon
-        this.app.use('/', this.addon.getRouter())
+        // Explicitly serve manifest.json
+        this.app.get('/manifest.json', (req, res) => {
+            res.sendFile(path.join(__dirname, '../resources/manifest.json'))
+        })
+        
+        // Stream handler endpoint
+        this.app.get('/stream/:type/:id', (req, res) => {
+            const { type, id } = req.params
+            
+            // Mock response for stream requests
+            res.json({
+                streams: [
+                    {
+                        name: 'EpisoNext Enhanced Stream',
+                        description: 'Enhanced stream with next episode tracking',
+                        url: `https://example.com/stream/${id}`
+                    }
+                ]
+            })
+        })
         
         // Health check endpoint
         this.app.get('/health', (req, res) => {
-            res.json({ status: 'ok', version: require('../../package.json').version })
+            res.status(200).json({ status: 'ok' })
         })
         
-        // Configuration endpoint
+        // Configuration endpoints (excluding sensitive info)
         this.app.get('/config', (req, res) => {
-            const config = configManager.getCurrentConfig()
-            // Remove sensitive information
-            const safeConfig = { ...config }
-            if (safeConfig.tmdb) safeConfig.tmdb = { ...safeConfig.tmdb, apiKey: '***' }
-            if (safeConfig.realDebrid) safeConfig.realDebrid = { ...safeConfig.realDebrid, apiKey: '***' }
-            
-            res.json(safeConfig)
-        })
-        
-        // Update configuration endpoint
-        this.app.post('/config', async (req, res) => {
-            try {
-                const newConfig = req.body
-                await configManager.updateConfig(newConfig)
-                
-                // Reinitialize addon with new config
-                await this.initializeAddon()
-                
-                res.json({ status: 'ok', message: 'Configuration updated successfully' })
-            } catch (error) {
-                res.status(500).json({ status: 'error', message: error.message })
-            }
+            // Return non-sensitive configuration
+            res.status(200).json({
+                version: '1.1.0',
+                features: {
+                    realTimeMonitoring: true,
+                    notifications: true,
+                    upcomingEpisodes: true
+                }
+            })
         })
     }
-
-    // Start the server
-    listen() {
-        console.log('EpisoNext server starting...');
-        this.app.listen(this.port, () => {
-            console.log(`EpisoNext addon running at http://127.0.0.1:${this.port}`)
-        })
+    
+    stop() {
+        // Cleanup logic here
+        console.log('Stopping EpisoNext server')
     }
 }
 
-// Create and start server if this file is run directly
+// If this file is run directly, start the server
 if (require.main === module) {
     const server = new EpisoNextServer()
-    server.start().catch(error => {
-        console.error('Failed to start server:', error)
-        process.exit(1)
-    })
+    server.start()
 }
 
 module.exports = EpisoNextServer 

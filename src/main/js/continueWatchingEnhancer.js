@@ -321,8 +321,8 @@ class ContinueWatchingEnhancer extends EventEmitter {
     }
 }
 
-// Example usage
-const enhancer = module.exports = new ContinueWatchingEnhancer()
+// Create and export the enhancer instance
+const enhancer = new ContinueWatchingEnhancer();
 
 // Event listeners example
 enhancer.on('upcomingEpisode', (episode) => {
@@ -340,4 +340,4 @@ enhancer.on('monitoringError', (error) => {
     // Could implement error recovery or user notification
 })
 
-console.error('EpisoNext enhancer error:', error); 
+module.exports = enhancer; 

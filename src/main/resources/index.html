@@ -161,7 +161,7 @@
         <img src="logo.png" alt="Stremio Next Episode Addon Logo" class="logo">
         <h1>Stremio Next Episode Addon</h1>
         <p class="subtitle">Enhanced Continue Watching with Real-Time Monitoring</p>
-        <a href="stremio://addon/com.stremio.continuewatching.enhanced/manifest.json" class="install-button">Install Addon</a>
+        <a href="stremio://addon/com.stremio.episonext/manifest.json" class="install-button">Install Addon</a>
     </header>
     
     <div class="container">
@@ -216,15 +216,15 @@
             <h2>Installation</h2>
             <p>Click the "Install Addon" button above or manually add the addon URL in Stremio:</p>
             <div class="code-block">
-                <code>https://stremio-next-episode-addon.github.io/manifest.json</code>
+                <code>stremio://addon/com.stremio.episonext/manifest.json</code>
             </div>
             
             <h3>Manual Installation</h3>
             <p>If you prefer to run the addon locally:</p>
             <div class="code-block">
                 <code>
-                    git clone https://github.com/yourusername/stremio-next-episode-addon.git<br>
-                    cd stremio-next-episode-addon<br>
+                    git clone https://github.com/yourusername/episonext.git<br>
+                    cd episonext<br>
                     npm install<br>
                     npm run configure<br>
                     npm start
@@ -258,7 +258,7 @@
                 e.preventDefault();
                 
                 // Try to open Stremio app with the addon
-                window.location.href = 'stremio://addon/com.stremio.continuewatching.enhanced/manifest.json';
+                window.location.href = 'stremio://addon/com.stremio.episonext/manifest.json';
                 
                 // After a delay, check if the app was opened
                 setTimeout(function() {

@@ -22,30 +22,24 @@ For detailed installation instructions, please see [INSTALLATION.md](./INSTALLAT
 stremio://addon/com.stremio.episonext/manifest.json
 ```
 
-Or visit our [web installation page](https://episonext.github.io).
+Or visit our [web installation page](http://localhost:7000) when running the addon locally.
 
 ## Configuration
 
-EpisoNext can be configured through the settings UI or by editing the configuration file directly.
+EpisoNext requires a TMDB API key to function properly. When you first launch the application, a configuration window will appear.
 
-### UI Configuration
+### Required API Keys
 
-1. Launch the EpisoNext configuration UI
-2. Adjust settings according to your preferences
-3. Save changes
+#### TMDB API Key
+1. Visit [TMDB API Documentation](https://www.themoviedb.org/documentation/api)
+2. Create a free account
+3. Request an API key
+4. Enter the API key in the configuration window
 
-### Manual Configuration
+### Optional API Keys
 
-Edit the `config.json` file in the EpisoNext data directory:
-
-```json
-{
-  "tmdbApiKey": "your_api_key",
-  "cacheExpirationTime": 86400,
-  "monitoringInterval": 3600,
-  "enableNotifications": true
-}
-```
+#### Real-Debrid API Key (Optional)
+- This enhances streaming capabilities but is not required
 
 ## Development
 
@@ -73,6 +67,26 @@ npm run dev
 ```bash
 npm run build
 ```
+
+### Running the Addon
+
+```bash
+# Start the addon server
+npm start
+```
+
+The addon will be available at:
+- Local URL: http://localhost:7000/manifest.json
+- Installation URL: stremio://addon/com.stremio.episonext/manifest.json
+
+## Troubleshooting
+
+If the addon link is not working:
+
+1. Make sure the server is running
+2. Check that the manifest.json file exists at src/main/resources/manifest.json
+3. Verify that the addon ID in all files is consistent (com.stremio.episonext)
+4. Ensure Stremio is installed and running
 
 ## Contributing
 

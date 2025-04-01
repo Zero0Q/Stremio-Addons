@@ -10,10 +10,10 @@ You can install this addon directly in Stremio by clicking the following link:
 stremio://addon/com.stremio.episonext/manifest.json
 ```
 
-Or visit our web installation page:
+Or visit the web installation page when running the addon locally:
 
 ```
-https://episonext.github.io
+http://localhost:7000
 ```
 
 ## Manual Installation from GitHub
@@ -34,61 +34,57 @@ cd episonext
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
-### Step 3: Configure the Addon
-
-Run the configuration utility:
-
-```bash
-npm run configure
-```
-
-This will open the configuration window where you can enter your API keys.
-
-### Step 4: Start the Addon
+### Step 3: Start the Addon
 
 ```bash
 npm start
 ```
 
-### Step 5: Add to Stremio
+The first time you run the addon, a configuration window will appear where you can enter your TMDB API key.
 
-Once the addon is running, you can add it to Stremio by visiting:
+### Step 4: Add to Stremio
+
+Once the addon is running, you can add it to Stremio by clicking:
+
+```
+stremio://addon/com.stremio.episonext/manifest.json
+```
+
+Or by entering this URL in Stremio's addon search:
 
 ```
 http://localhost:7000/manifest.json
 ```
 
-Or by entering this URL in Stremio's addon search.
+## Development Mode
 
-## Docker Installation
-
-We also provide a Docker image for easy deployment:
+To run the addon in development mode:
 
 ```bash
-docker pull ghcr.io/yourusername/episonext:latest
-docker run -p 7000:7000 -v ./config:/app/config ghcr.io/yourusername/episonext:latest
+npm run dev
 ```
 
-## GitHub Actions Integration
+This will start the addon with hot reloading enabled.
 
-This addon uses GitHub Actions for CI/CD. Each push to the main branch:
-1. Runs tests
-2. Builds the addon
-3. Publishes to GitHub Pages
-4. Updates the Docker image
+## Building for Production
+
+To build the addon for production:
+
+```bash
+npm run build
+```
 
 ## Troubleshooting
 
 If you encounter issues during installation:
 
-1. Check that you have the correct Node.js version
-2. Verify your API keys are valid
-3. Ensure ports 7000 and 7001 are available
-4. Check the logs with `npm run logs`
+1. Check that you have the correct Node.js version (14+)
+2. Verify your TMDB API key is valid
+3. Ensure port 7000 is available
+4. Make sure Stremio is installed and running
+5. Check that the manifest.json file exists at src/main/resources/manifest.json
 
 ## Updating
 
@@ -97,17 +93,9 @@ To update to the latest version:
 ```bash
 git pull
 npm install
-npm run build
+npm start
 ```
-
-Or simply reinstall using the one-click installation link.
 
 ## Uninstalling
 
-To uninstall from Stremio, go to the Addons section and remove "EpisoNext".
-
-To completely remove the addon:
-
-```bash
-npm run uninstall
-``` 
+To uninstall from Stremio, go to the Addons section and remove "EpisoNext". 
