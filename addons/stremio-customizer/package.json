@@ -1,0 +1,34 @@
+{
+  "name": "stremio-customizer",
+  "version": "1.0.0",
+  "description": "A Stremio addon that allows comprehensive customization of the Stremio interface",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "stremio",
+    "addon",
+    "customization"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "lowdb": "^6.1.1",
+    "node-fetch": "^3.3.2",
+    "path-to-regexp": "^6.2.0",
+    "stremio-addon-sdk": "1.6.10"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "overrides": {
+    "express-handlebars": "^5.3.1"
+  }
+}

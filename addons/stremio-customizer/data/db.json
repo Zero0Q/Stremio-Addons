@@ -1,0 +1,21 @@
+{
+  "users": [],
+  "customizations": {
+    "IyZT502pBmeoD_GCFwnLMRXsZlcp-DGEPsSdDmEwlI8=": {
+      "ui": {
+        "theme": "dark",
+        "layout": "expanded",
+        "hiddenElements": [
+          ".sidebar",
+          ".top-bar",
+          ".footer"
+        ],
+        "customCSS": ""
+      }
+    }
+  },
+  "settings": {
+    "port": 7000,
+    "version": "1.0.0"
+  }
+}

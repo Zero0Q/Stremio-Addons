@@ -1,0 +1,12 @@
+{
+  "id": "com.stremio.episonext",
+  "version": "1.1.0",
+  "name": "EpisoNext",
+  "description": "Smart next episode tracking and real-time monitoring for Stremio",
+  "resources": [
+    "stream"
+  ],
+  "types": ["series"],
+  "catalogs": [],
+  "idPrefixes": ["tt"]
+} 

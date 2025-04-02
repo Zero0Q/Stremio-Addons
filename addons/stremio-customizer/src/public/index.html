@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stremio Customizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-dark text-light">
+    <div class="container-fluid">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="bi bi-gear me-2"></i>
+                    Stremio Customizer
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-section="auth">
+                                <i class="bi bi-key me-1"></i>
+                                Authentication
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="ui">
+                                <i class="bi bi-palette me-1"></i>
+                                UI Customization
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="catalogs">
+                                <i class="bi bi-collection me-1"></i>
+                                Catalog Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="filters">
+                                <i class="bi bi-funnel me-1"></i>
+                                Content Filters
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="addons">
+                                <i class="bi bi-puzzle me-1"></i>
+                                Addon Settings
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="profiles">
+                                <i class="bi bi-person me-1"></i>
+                                Profiles
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="script">
+                                <i class="bi bi-code-square me-1"></i>
+                                Custom Script
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="section-content p-4">
+            <!-- Authentication Section -->
+            <div class="section fade-in" id="auth-section">
+                <div class="card bg-dark border-secondary">
+                    <div class="card-header bg-dark border-secondary">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-key me-2"></i>
+                            Authentication
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info bg-dark border-info text-info mb-4">
+                            <h6 class="alert-heading">
+                                <i class="bi bi-info-circle me-2"></i>
+                                How to Get Your Stremio Auth Key
+                            </h6>
+                            <div class="steps-container">
+                                <div class="step-item">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h6 class="step-title">Open Stremio Web</h6>
+                                        <p class="step-description">Launch Stremio in your web browser</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h6 class="step-title">Open Developer Tools</h6>
+                                        <p class="step-description">Press <kbd>F12</kbd> or right-click and select "Inspect"</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h6 class="step-title">Access Console</h6>
+                                        <p class="step-description">Click on the "Console" tab in Developer Tools</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h6 class="step-title">Get Auth Key</h6>
+                                        <div class="code-block bg-dark border border-secondary p-3 rounded">
+                                            <code id="auth-key-command" class="text-light">JSON.parse(localStorage.getItem("profile")).auth.key</code>
+                                            <button class="btn btn-sm btn-outline-primary copy-code" onclick="copyToClipboard('auth-key-command')">
+                                                <i class="bi bi-clipboard me-1"></i>Copy
+                                            </button>
+                                        </div>
+                                        <p class="step-description">Press <kbd>Enter</kbd> to display your auth key</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-number">5</div>
+                                    <div class="step-content">
+                                        <h6 class="step-title">Copy & Paste</h6>
+                                        <p class="step-description">Copy the displayed key and paste it in the input field below</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="authKey" class="form-label">Stremio Auth Key</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-dark text-light border-secondary" id="authKey" placeholder="Paste your auth key here">
+                                <button class="btn btn-primary" id="saveAuthKey" type="button">
+                                    <i class="bi bi-check-lg me-1"></i>
+                                    Save
+                                </button>
+                            </div>
+                            <small class="text-muted">
+                                <i class="bi bi-shield-lock me-1"></i>
+                                Your auth key is encrypted and stored securely
+                            </small>
+                        </div>
+
+                        <div class="alert alert-warning bg-dark border-warning text-warning">
+                            <h6 class="alert-heading">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                Important Notes
+                            </h6>
+                            <ul class="mb-0">
+                                <li>Never share your auth key with anyone</li>
+                                <li>The auth key is required to sync your customizations across devices</li>
+                                <li>If you lose your auth key, you can get it again using the same method</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UI Customization Section -->
+            <div class="section fade-in d-none" id="ui-section">
+                <div class="card bg-dark border-secondary">
+                    <div class="card-header bg-dark border-secondary">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-palette me-2"></i>
+                            UI Customization
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Theme Selection -->
+                        <div class="mb-4">
+                            <label class="form-label">Theme</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="theme" id="theme-light" value="light">
+                                <label class="btn btn-outline-primary" for="theme-light">
+                                    <i class="bi bi-sun me-1"></i>
+                                    Light
+                                </label>
+                                <input type="radio" class="btn-check" name="theme" id="theme-dark" value="dark" checked>
+                                <label class="btn btn-outline-primary" for="theme-dark">
+                                    <i class="bi bi-moon me-1"></i>
+                                    Dark
+                                </label>
+                                <input type="radio" class="btn-check" name="theme" id="theme-system" value="system">
+                                <label class="btn btn-outline-primary" for="theme-system">
+                                    <i class="bi bi-display me-1"></i>
+                                    System
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Color Scheme -->
+                        <div class="mb-4">
+                            <label class="form-label">Color Scheme</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="colorScheme" id="scheme-blue" value="blue" checked>
+                                <label class="btn btn-outline-primary" for="scheme-blue">
+                                    <i class="bi bi-palette me-1"></i>
+                                    Blue
+                                </label>
+                                <input type="radio" class="btn-check" name="colorScheme" id="scheme-purple" value="purple">
+                                <label class="btn btn-outline-primary" for="scheme-purple">
+                                    <i class="bi bi-palette me-1"></i>
+                                    Purple
+                                </label>
+                                <input type="radio" class="btn-check" name="colorScheme" id="scheme-green" value="green">
+                                <label class="btn btn-outline-primary" for="scheme-green">
+                                    <i class="bi bi-palette me-1"></i>
+                                    Green
+                                </label>
+                                <input type="radio" class="btn-check" name="colorScheme" id="scheme-red" value="red">
+                                <label class="btn btn-outline-primary" for="scheme-red">
+                                    <i class="bi bi-palette me-1"></i>
+                                    Red
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Layout -->
+                        <div class="mb-4">
+                            <label class="form-label">Layout</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="layout" id="layout-compact" value="compact">
+                                <label class="btn btn-outline-primary" for="layout-compact">
+                                    <i class="bi bi-grid me-1"></i>
+                                    Compact
+                                </label>
+                                <input type="radio" class="btn-check" name="layout" id="layout-expanded" value="expanded" checked>
+                                <label class="btn btn-outline-primary" for="layout-expanded">
+                                    <i class="bi bi-grid-3x3 me-1"></i>
+                                    Expanded
+                                </label>
+                                <input type="radio" class="btn-check" name="layout" id="layout-list" value="list">
+                                <label class="btn btn-outline-primary" for="layout-list">
+                                    <i class="bi bi-list me-1"></i>
+                                    List
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Elements -->
+                        <div class="mb-4">
+                            <label class="form-label">Hidden Elements</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="hide-sidebar" checked>
+                                        <label class="form-check-label" for="hide-sidebar">
+                                            Sidebar
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="hide-topbar" checked>
+                                        <label class="form-check-label" for="hide-topbar">
+                                            Top Bar
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="hide-footer" checked>
+                                        <label class="form-check-label" for="hide-footer">
+                                            Footer
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="hide-search" checked>
+                                        <label class="form-check-label" for="hide-search">
+                                            Search Bar
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="hide-notifications" checked>
+                                        <label class="form-check-label" for="hide-notifications">
+                                            Notifications
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="hide-player-controls" checked>
+                                        <label class="form-check-label" for="hide-player-controls">
+                                            Player Controls
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content Display Options -->
+                        <div class="mb-3">
+                            <label class="form-label">Content Display Options</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="show-imdb" checked>
+                                <label class="form-check-label" for="show-imdb">Show IMDB Rating</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="show-year" checked>
+                                <label class="form-check-label" for="show-year">Show Year</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="show-duration" checked>
+                                <label class="form-check-label" for="show-duration">Show Duration</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="show-genres" checked>
+                                <label class="form-check-label" for="show-genres">Show Genres</label>
+                            </div>
+                        </div>
+
+                        <!-- Continue Watching Configuration -->
+                        <div class="mb-3">
+                            <h5>Continue Watching</h5>
+                            <div class="mb-3">
+                                <label class="form-label">Sort Order</label>
+                                <select class="form-select" id="continue-watching-sort">
+                                    <option value="smart">Smart Sort</option>
+                                    <option value="recently-aired">Recently Aired</option>
+                                    <option value="last-watched">Last Watched</option>
+                                    <option value="progress">Progress (Highest)</option>
+                                    <option value="progress-lowest">Progress (Lowest)</option>
+                                    <option value="alphabetical">Alphabetical</option>
+                                    <option value="date-added">Date Added</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Sync Settings</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="enable-realtime-sync" checked>
+                                    <label class="form-check-label" for="enable-realtime-sync">Enable Real-time Sync</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sync-across-devices" checked>
+                                    <label class="form-check-label" for="sync-across-devices">Sync Across Devices</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="auto-sync-library" checked>
+                                    <label class="form-check-label" for="auto-sync-library">Auto-sync Library</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Content Types</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show-movies" checked>
+                                    <label class="form-check-label" for="show-movies">Show Movies</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show-series" checked>
+                                    <label class="form-check-label" for="show-series">Show Series</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show-documentaries" checked>
+                                    <label class="form-check-label" for="show-documentaries">Show Documentaries</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Display Options</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show-progress-bar" checked>
+                                    <label class="form-check-label" for="show-progress-bar">Show Progress Bar</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show-time-remaining" checked>
+                                    <label class="form-check-label" for="show-time-remaining">Show Time Remaining</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="auto-remove-completed" checked>
+                                    <label class="form-check-label" for="auto-remove-completed">Auto-remove Completed</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Recent Episodes</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show-new-episodes" checked>
+                                    <label class="form-check-label" for="show-new-episodes">Show New Episodes</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="show-premiered-shows" checked>
+                                    <label class="form-check-label" for="show-premiered-shows">Show Premiered Shows</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="recent-episode-days" class="form-label">Recent Episode Days</label>
+                                    <input type="number" class="form-control" id="recent-episode-days" value="7" min="1" max="30">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Progress Settings</label>
+                                <div class="mb-3">
+                                    <label for="progress-threshold" class="form-label">Progress Threshold (%)</label>
+                                    <input type="number" class="form-control" id="progress-threshold" value="5" min="0" max="100">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="max-continue-items" class="form-label">Max Items</label>
+                                    <input type="number" class="form-control" id="max-continue-items" value="20" min="1" max="100">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="time-filter" class="form-label">Time Filter</label>
+                                    <select class="form-select" id="time-filter">
+                                        <option value="all">All Time</option>
+                                        <option value="week">Last Week</option>
+                                        <option value="month">Last Month</option>
+                                        <option value="year">Last Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom CSS -->
+                        <div class="mb-4">
+                            <label for="customCSS" class="form-label">Custom CSS</label>
+                            <textarea class="form-control bg-dark text-light border-secondary" id="customCSS" rows="5" placeholder="Enter custom CSS..."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" id="applyUICustomizations">
+                            <i class="bi bi-check-lg me-1"></i>
+                            Apply UI Customizations
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Catalog Management Section -->
+            <div class="section fade-in d-none" id="catalogs-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Catalog Management</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <button id="load-catalogs" class="btn btn-primary">Load Catalogs</button>
+                        </div>
+                        
+                        <div id="catalogs-container" class="d-none">
+                            <p>Select catalogs to hide:</p>
+                            <div id="catalogs-list" class="list-group mb-3">
+                                <!-- Catalogs will be loaded here -->
+                            </div>
+                            
+                            <button id="catalogs-save" class="btn btn-primary">Save Catalog Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Filtering Section -->
+            <div class="section fade-in d-none" id="filters-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Content Filtering</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Create rules to filter content in Stremio:</p>
+                        
+                        <div id="filter-rules" class="mb-3">
+                            <!-- Filter rules will be added here -->
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button id="add-filter-rule" class="btn btn-outline-secondary">Add Filter Rule</button>
+                        </div>
+                        
+                        <div id="new-rule-form" class="mb-3 d-none">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="rule-type" class="form-label">Rule Type</label>
+                                        <select class="form-select" id="rule-type">
+                                            <option value="exclude">Exclude</option>
+                                            <option value="include">Include Only</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="rule-field" class="form-label">Field</label>
+                                        <select class="form-select" id="rule-field">
+                                            <option value="name">Name</option>
+                                            <option value="genre">Genre</option>
+                                            <option value="year">Year</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="rule-value" class="form-label">Value</label>
+                                        <input type="text" class="form-control" id="rule-value" placeholder="Enter value">
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button id="save-rule" class="btn btn-primary">Save Rule</button>
+                                        <button id="cancel-rule" class="btn btn-outline-secondary">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="filters-save" class="btn btn-primary">Save Filter Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Addon Management Section -->
+            <div class="section fade-in d-none" id="addons-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Addon Management</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <button id="load-addons" class="btn btn-primary">Load Addons</button>
+                        </div>
+                        
+                        <div id="addons-container" class="d-none">
+                            <div id="addons-list" class="list-group mb-3">
+                                <!-- Addons will be loaded here -->
+                            </div>
+                            
+                            <button id="addons-save" class="btn btn-primary">Save Addon Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profiles Section -->
+            <div class="section fade-in d-none" id="profiles-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Customization Profiles</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="profile-name" class="form-label">Profile Name</label>
+                            <input type="text" class="form-control" id="profile-name" placeholder="Enter profile name">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button id="save-profile" class="btn btn-primary">Save Current Settings as Profile</button>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h6>Saved Profiles</h6>
+                        <div id="profiles-list" class="list-group mb-3">
+                            <!-- Saved profiles will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Script Section -->
+            <div class="section fade-in d-none" id="script-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Custom Script</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Enter your custom script here:</p>
+                        <textarea id="custom-script" class="form-control bg-dark text-light border-secondary" rows="5" placeholder="Enter your custom script here"></textarea>
+                        <button id="save-script" class="btn btn-primary">Save Script</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apply Customizations Section -->
+            <div class="section fade-in d-none" id="apply-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Apply Customizations</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Your customizations are ready to be applied to Stremio. You can either:</p>
+                        
+                        <div class="mb-3">
+                            <button id="generate-script" class="btn btn-primary">Generate Script</button>
+                            <p class="mt-2">Copy the generated script and paste it into your browser's console when using Stremio Web.</p>
+                        </div>
+                        
+                        <div id="script-output" class="d-none">
+                            <div class="mb-3">
+                                <label class="form-label">Copy this script:</label>
+                                <div class="position-relative">
+                                    <textarea id="script-content" class="form-control" rows="5" readonly></textarea>
+                                    <button id="copy-script" class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-dark text-white text-center py-3 mt-5">
+            <div class="container">
+                <p class="mb-0">Stremio Customizer &copy; 2025 | Not affiliated with Stremio</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 

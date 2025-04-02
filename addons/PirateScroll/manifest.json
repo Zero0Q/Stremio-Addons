@@ -1,0 +1,17 @@
+{
+  "id": "org.tftop10",
+  "version": "0.0.3",
+  "name": "TorrentFreak Top 10 Movies",
+  "description": "Add-on to show a Catalog for TorrenFreak's Weekly Top 10 Movies",
+  "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/TorrentFreak_logo.svg/982px-TorrentFreak_logo.svg.png",
+  "resources": ["catalog"],
+  "types": ["movie"],
+  "idPrefixes": ["tt"],
+  "catalogs": [
+    {
+      "type": "movie",
+      "id": "tktop10movies",
+      "name": "Top 10 Most Pirated by TorrentFreak"
+    }
+  ]
+} 

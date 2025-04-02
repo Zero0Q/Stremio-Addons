@@ -1,0 +1,14 @@
+# These owners will be the default owners for everything in the repo
+* @yourusername
+
+# Specific ownership for critical files
+/src/main/js/addon.js @yourusername
+/src/main/js/continueWatchingEnhancer.js @yourusername
+/src/main/js/configManager.js @yourusername
+
+# Ownership for GitHub Actions workflows
+/.github/workflows/ @yourusername
+
+# Ownership for documentation
+/README.md @yourusername
+/INSTALLATION.md @yourusername 
